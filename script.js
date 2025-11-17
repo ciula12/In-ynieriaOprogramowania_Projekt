@@ -56,6 +56,8 @@
       setTimeout(()=>el.remove(),300);
     },1200);
   }
+  // expose to window so other modules can call it
+  window.flashMessage = flashMessage;
 
 async function loadSettings(){
     const defaultSettings = { mainLanguage: 'pl', targetLanguage: 'en', darkMode: true };
@@ -222,13 +224,31 @@ document.addEventListener('click', (e) => {
   if (!card) return;
   if (!card.closest('.content')) return;
 
+  // jeśli klik pochodzi z przycisku/przykładu otwarcia poziomu, pozwól lokalnemu handlerowi obsłużyć
+  if (e.target.closest('[data-open-level]')) return;
+
+  // --- NEW: zablokuj globalne przekierowanie na stronie sets.html ---
+  const p = (location.pathname || '').toLowerCase();
+  const isSetsPage = p.endsWith('/profile.html') || p.endsWith('\\profile.html') || 
+                     p.endsWith('/sets.html') || p.endsWith('\\sets.html') ||
+                     document.title.toLowerCase().includes('moje zestawy') ||
+                     document.body.getAttribute('aria-label') === 'Moje zestawy';
+  if (isSetsPage) {
+    return;
+  }
+
   const levelsList = document.getElementById('levels-list');
 
   // jeśli karta NIE jest w #levels-list (np. na sets.html), nie przekierowujemy — pokazujemy komunikat
   if (!levelsList || !levelsList.contains(card)) {
     const lvl = card.dataset.level || ((card.textContent || '').match(/\b(A1|A2|B1|B2|C1|C2)\b/) || [null])[0];
-    if (window.flashMessage) window.flashMessage(`Otwieram zestawy: ${lvl || ''}`);
-    else console.log(`Otwieram zestawy: ${lvl || ''}`);
+    const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+    const main = settings.mainLanguage || 'pl';
+    const target = settings.targetLanguage || 'en';
+    const study = { mainLanguage: main, targetLanguage: target, level: lvl || null };
+    localStorage.setItem('study', JSON.stringify(study));
+    if (window.flashMessage) window.flashMessage('Przygotowuję quiz...');
+    window.location.href = 'quiz.html';
     return;
   }
 
