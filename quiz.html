@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quiz</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .quiz-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;}
+    .quiz-progress { flex:1; margin:0 12px; }
+    .quiz-counters { display:flex; gap:8px; align-items:center; }
+    .quiz-counter { padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.03); font-weight:800; }
+    .quiz-card { margin: 12px 6px 18px; padding:28px; border-radius:12px; background: linear-gradient(180deg, rgba(100,100,140,0.15), rgba(120,120,160,0.06)); text-align:center; min-height:160px; display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--white); }
+    .options { display:flex; flex-direction:column; gap:10px; padding:0 6px; }
+    .option-btn { padding:12px 14px; border-radius:10px; background:var(--card); color:var(--white); border:1px solid rgba(255,255,255,0.02); font-weight:700; cursor:pointer; text-align:center; }
+    .option-btn.correct { background: rgba(115, 207, 154); color:#06110a; }
+    .option-btn.wrong { background: rgba(221, 50, 51); color:#f5d5d5; }
+    .option-btn:disabled { cursor:default; opacity:0.95; }
+    .quiz-end { text-align:center; padding:18px; }
+    .option-btn:not(.correct):not(.wrong):hover:not(:disabled) {
+    background-color: rgba(255,255,255,0.05);
+    transform: none !important;    
+    transition: background-color .14s ease, box-shadow .12s ease;    }
+  </style>
+</head>
+<body>
+  <div class="frame" role="application" aria-label="Quiz">
+
+    <main class="content" id="mainContent">
+      <div class="quiz-header">
+        <div class="circle-btn" id="btnBack" title="Powrót">✕</div>
+        <div class="quiz-progress">
+          <div class="progress" style="height:10px;">
+            <i id="progressFill" style="width:0%; height:100%; display:block; background:linear-gradient(90deg,var(--progress-orange),var(--progress-orange-2)); border-radius:999px;"></i>
+          </div>
+        </div>
+        <div class="quiz-counters">
+          <div class="quiz-counter" id="correctCount">0</div>
+          <div class="quiz-counter" id="wrongCount">0</div>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quizCard">...</div>
+
+      <div class="options" id="optionsContainer"></div>
+
+      <div id="endBox" style="display:none;" class="quiz-end">
+        <div class="big" id="endTitle">Koniec</div>
+        <div class="muted" id="endSummary"></div>
+        <div style="padding-top:12px;">
+          <button class="cta" id="btnRestart">Uruchom ponownie</button>
+          <button class="cta" id="btnHome" >Powrót</button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+<script>
+(async function(){
+  const btnBack = document.getElementById('btnBack');
+  btnBack.addEventListener('click', ()=> history.back());
+
+  const study = JSON.parse(localStorage.getItem('study') || '{}');
+  const mainLang = study.mainLanguage || 'pl';
+  const targetLang = study.targetLanguage || 'en';
+  const chosenLevel = study.level || null;
+
+  const CARD_COUNT = 4;
+  let deck = [];
+  let index = 0;
+  let correct = 0;
+  let wrong = 0;
+
+  const quizCard = document.getElementById('quizCard');
+  const optionsContainer = document.getElementById('optionsContainer');
+  const progressFill = document.getElementById('progressFill');
+  const correctCountEl = document.getElementById('correctCount');
+  const wrongCountEl = document.getElementById('wrongCount');
+  const endBox = document.getElementById('endBox');
+  const endSummary = document.getElementById('endSummary');
+  const btnRestart = document.getElementById('btnRestart');
+  const btnHome = document.getElementById('btnHome');
+
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a; }
+
+  async function loadPack(){
+    try {
+      const res = await fetch('data/LanguagePack.json');
+      if(!res.ok) throw new Error('load failed');
+      return await res.json();
+    } catch(e){
+      console.error(e);
+      return [];
+    }
+  }
+
+  function pickDeck(entries){
+    const filtered = entries.filter(e => (e.level && e.level[targetLang] && (!chosenLevel || e.level[targetLang] === chosenLevel)));
+    let pool = filtered.length >= CARD_COUNT ? filtered : entries.filter(e => e.level && e.level[targetLang]);
+    if(pool.length < CARD_COUNT) pool = entries;
+    return shuffle(pool).slice(0, Math.min(CARD_COUNT, pool.length));
+  }
+
+  function makeOptions(correctEntry, allEntries){
+    const correctText = (correctEntry.word && correctEntry.word[targetLang]) || '';
+    const distractors = allEntries.filter(e => e !== correctEntry && e.word && e.word[targetLang])
+                                 .map(e => e.word[targetLang]);
+    shuffle(distractors);
+    const opts = [correctText, ...(distractors.slice(0,2))];
+    return shuffle(opts);
+  }
+
+  function renderCard(entry, allEntries){
+    quizCard.textContent = entry.word?.[mainLang] || '(brak)';
+    const opts = makeOptions(entry, allEntries);
+    optionsContainer.innerHTML = '';
+    opts.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'option-btn';
+      b.textContent = opt;
+      b.addEventListener('click', ()=> onAnswer(b, opt, entry));
+      optionsContainer.appendChild(b);
+    });
+  }
+
+  function updateProgress(step = index){
+    // step = liczba ukończonych pytań (0..CARD_COUNT)
+    const pct = Math.round((step / CARD_COUNT) * 100);
+    progressFill.style.width = pct + '%';
+    correctCountEl.textContent = correct;
+    wrongCountEl.textContent = wrong;
+  }
+
+  function disableOptions(){
+    optionsContainer.querySelectorAll('button').forEach(btn => btn.disabled = true);
+  }
+
+  function onAnswer(buttonEl, chosenText, entry){
+    const correctText = entry.word?.[targetLang] || '';
+    const isCorrect = chosenText === correctText;
+    disableOptions();
+    if(isCorrect){
+      buttonEl.classList.add('correct');
+      correct++;
+    } else {
+      buttonEl.classList.add('wrong');
+      const correctBtn = Array.from(optionsContainer.querySelectorAll('button')).find(b => b.textContent === correctText);
+      if(correctBtn) correctBtn.classList.add('correct');
+      wrong++;
+    }
+
+    // pokaz postęp dla ukończonych pytań
+    updateProgress(index + 1);
+
+    setTimeout(()=> {
+      index++;
+      if(index < deck.length){
+        renderCard(deck[index], deck);
+        updateProgress(index); // pokaż aktualny stan (nieukończone)
+      } else {
+        finishQuiz();
+      }
+    }, 900);
+  }
+
+  function finishQuiz(){
+    optionsContainer.innerHTML = '';
+    quizCard.style.display = 'none';
+    endBox.style.display = 'block';
+    endSummary.textContent = `Wynik: ${correct} poprawnych, ${wrong} błędnych.`;
+    localStorage.setItem('lastQuizResult', JSON.stringify({ mainLang, targetLang, chosenLevel, correct, wrong, date: Date.now() }));
+  }
+
+  btnRestart.addEventListener('click', () => {
+    index = 0; correct = 0; wrong = 0;
+    quizCard.style.display = '';
+    endBox.style.display = 'none';
+    start();
+  });
+  btnHome.addEventListener('click', ()=> location.href = 'home.html');
+
+  async function start(){
+    updateProgress(0);
+    const all = await loadPack();
+    deck = pickDeck(all);
+    if(deck.length === 0){
+      quizCard.textContent = 'Brak fiszek';
+      return;
+    }
+    index = 0; correct = 0; wrong = 0;
+    quizCard.style.display = '';
+    endBox.style.display = 'none';
+    renderCard(deck[index], deck);
+    updateProgress(index);
+  }
+
+  start();
+
+})();
+</script>
+</body>
+</html>

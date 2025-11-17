@@ -1,0 +1,152 @@
+[
+    {
+        "id": "001",
+        "word": { "pl": "pies", "en": "dog", "de": "der Hund" },
+        "level": { "pl": "A1", "en": "A1", "de": "A1" }
+    },
+    {
+        "id": "002",
+        "word": { "pl": "kot", "en": "cat", "de": "die Katze" },
+        "level": { "pl": "A1", "en": "A1", "de": "A1" }
+    },
+    {
+        "id": "003",
+        "word": { "pl": "dom", "en": "house", "de": "das Haus" },
+        "level": { "pl": "A1", "en": "A1", "de": "A1" }
+    },
+    {
+        "id": "004",
+        "word": { "pl": "mama", "en": "mother", "de": "die Mutter" },
+        "level": { "pl": "A1", "en": "A1", "de": "A1" }
+    },
+    {
+        "id": "005",
+        "word": { "pl": "tata", "en": "father", "de": "der Vater" },
+        "level": { "pl": "A1", "en": "A1", "de": "A1" }
+    },
+    {
+        "id": "006",
+        "word": { "pl": "chleb", "en": "bread", "de": "das Brot" },
+        "level": { "pl": "A2", "en": "A2", "de": "A2" }
+    },
+    {
+        "id": "007",
+        "word": { "pl": "woda", "en": "water", "de": "das Wasser" },
+        "level": { "pl": "A2", "en": "A2", "de": "A2" }
+    },
+    {
+        "id": "008",
+        "word": { "pl": "sklep", "en": "shop", "de": "das Geschäft" },
+        "level": { "pl": "A2", "en": "A2", "de": "B1" }
+    },
+    {
+        "id": "009",
+        "word": { "pl": "książka", "en": "book", "de": "das Buch" },
+        "level": { "pl": "A2", "en": "A2", "de": "A2" }
+    },
+    {
+        "id": "010",
+        "word": { "pl": "samochód", "en": "car", "de": "das Auto" },
+        "level": { "pl": "A2", "en": "A2", "de": "A2" }
+    },
+    {
+        "id": "011",
+        "word": { "pl": "przyjaciel", "en": "friend", "de": "der Freund" },
+        "level": { "pl": "B1", "en": "B1", "de": "B1" }
+    },
+    {
+        "id": "012",
+        "word": { "pl": "szkoła", "en": "school", "de": "die Schule" },
+        "level": { "pl": "B1", "en": "B1", "de": "B1" }
+    },
+    {
+        "id": "013",
+        "word": { "pl": "uczyć się", "en": "to learn", "de": "lernen" },
+        "level": { "pl": "B1", "en": "B1", "de": "B1" }
+    },
+    {
+        "id": "014",
+        "word": { "pl": "pracować", "en": "to work", "de": "arbeiten" },
+        "level": { "pl": "B1", "en": "B1", "de": "B1" }
+    },
+    {
+        "id": "015",
+        "word": { "pl": "zdrowie", "en": "health", "de": "die Gesundheit" },
+        "level": { "pl": "B1", "en": "B1", "de": "B2" }
+    },
+    {
+        "id": "016",
+        "word": { "pl": "decyzja", "en": "decision", "de": "die Entscheidung" },
+        "level": { "pl": "B2", "en": "B2", "de": "B2" }
+    },
+    {
+        "id": "017",
+        "word": { "pl": "doświadczenie", "en": "experience", "de": "die Erfahrung" },
+        "level": { "pl": "B2", "en": "B2", "de": "B2" }
+    },
+    {
+        "id": "018",
+        "word": { "pl": "odpowiedzialność", "en": "responsibility", "de": "die Verantwortung" },
+        "level": { "pl": "B2", "en": "B2", "de": "B2" }
+    },
+    {
+        "id": "019",
+        "word": { "pl": "rozwój", "en": "development", "de": "die Entwicklung" },
+        "level": { "pl": "B2", "en": "B2", "de": "B2" }
+    },
+    {
+        "id": "020",
+        "word": { "pl": "społeczny", "en": "social", "de": "sozial" },
+        "level": { "pl": "B2", "en": "B2", "de": "B2" }
+    },
+    {
+        "id": "021",
+        "word": { "pl": "badanie", "en": "research", "de": "die Forschung" },
+        "level": { "pl": "C1", "en": "C1", "de": "C1" }
+    },
+    {
+        "id": "022",
+        "word": { "pl": "analiza", "en": "analysis", "de": "die Analyse" },
+        "level": { "pl": "C1", "en": "C1", "de": "C1" }
+    },
+    {
+        "id": "023",
+        "word": { "pl": "strategia", "en": "strategy", "de": "die Strategie" },
+        "level": { "pl": "C1", "en": "C1", "de": "C1" }
+    },
+    {
+        "id": "024",
+        "word": { "pl": "efektywność", "en": "efficiency", "de": "die Effizienz" },
+        "level": { "pl": "C1", "en": "C1", "de": "C1" }
+    },
+    {
+        "id": "025",
+        "word": { "pl": "negocjacje", "en": "negotiation", "de": "die Verhandlung" },
+        "level": { "pl": "C1", "en": "C1", "de": "C1" }
+    },
+    {
+        "id": "026",
+        "word": { "pl": "abstrakcja", "en": "abstraction", "de": "die Abstraktion" },
+        "level": { "pl": "C2", "en": "C2", "de": "C2" }
+    },
+    {
+        "id": "027",
+        "word": { "pl": "rehabilitacja", "en": "rehabilitation", "de": "die Rehabilitation" },
+        "level": { "pl": "C2", "en": "C2", "de": "C2" }
+    },
+    {
+        "id": "028",
+        "word": { "pl": "zrównoważony", "en": "sustainable", "de": "nachhaltig" },
+        "level": { "pl": "C2", "en": "C2", "de": "C2" }
+    },
+    {
+        "id": "029",
+        "word": { "pl": "interdyscyplinarny", "en": "interdisciplinary", "de": "interdisziplinär" },
+        "level": { "pl": "C2", "en": "C2", "de": "C2" }
+    },
+    {
+        "id": "030",
+        "word": { "pl": "implementacja", "en": "implementation", "de": "die Implementierung" },
+        "level": { "pl": "C2", "en": "C2", "de": "C2" }
+    }
+]

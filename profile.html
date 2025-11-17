@@ -1,0 +1,68 @@
+
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profil</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .card {
+    cursor: default !important;
+    }
+    .card:hover,
+    .card:focus {
+      transform: none !important;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5) !important;
+      background: linear-gradient(180deg, rgba(60,59,85,0.85), rgba(46,44,65,0.6)) !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame" aria-label="Profil">
+    <header class="app-header">
+      <div class="circle-btn" onclick="history.back()">←</div>
+      <div style="flex:1"></div>
+      <div class="circle-btn" title="Ustawienia" data-nav="settings">⚙️</div>
+    </header> 
+
+    <main class="content">
+      <div class="profile-header">
+        <div class="profile-avatar"></div>
+        <div class="big">Profil</div>
+        <div class="subtitle profile-subtitle"></div>
+      </div>
+
+      <div class="profile-wrapper">
+        <button class="cta">Dodaj znajomych</button>
+
+        <h3 style="margin-top:16px;">Ogólne statystyki</h3>
+        <div class="card profile-card">
+          <div class="big">🔥 1 dzień</div>
+          <div class="big">🏁 C1 • 304 XP</div>
+        </div>
+
+        <h3 style="margin-top:16px;">Osiągnięcia</h3>
+        <div class="profile-badges">
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+          <div class="profile-badge">✕</div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
